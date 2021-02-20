@@ -41,23 +41,15 @@ vector<int> esieve(int n)
 	return res;
 }
 
-unordered_set<int> esieve_uset(int n)
-{ 
-	vector<int> primes = esieve(n);
-	return unordered_set<int>(primes.begin(), primes.end());
-}
-
 int sp(int n)
 {
-	int i;
-
 	// if 1 or n, return itself
 	if (n == 1 || primes_map.count(n)) {
 		return n;
 	}
 
 	// otherwise return n/p
-	for (i = 0; i < primes.size(); i++) {
+	for (int i : primes) {
 		if (n % i == 0) {
 			return n / i;
 		}
@@ -69,9 +61,13 @@ int sp(int n)
 int main()
 {
 	int i, n, P, K;
-	unsigned long a0, a1;
+	unsigned long a0, a1, tmp;
 	unordered_map<unsigned long, int> found{100};
 	vector<int> seq{};
+
+	// generate primes
+	primes = esieve(100000);
+	primes_map = unordered_set<int>(primes.begin(), primes.end());
 
 	// get number of datasets
 	cin >> P;
@@ -81,31 +77,51 @@ int main()
 		cin >> K >> n >> a0 >> a1;
 
 		found.clear();
-		found.insert((a0 << 32) | a1, 0);
+		found[(a0 << 32) | a1] = 0;
 
 		seq.clear();
 		seq.push_back(a0);
 		seq.push_back(a1);
 
 		int j;
-		for (j = 0; j < n-2; j++) {
+		bool repeat_found = false;
+		for (j = 0; j < n-1; j++) {
+			tmp = a0;
 			a0 = a1;
-			a1 = sp(a0 + a1);
+			a1 = sp(tmp + a1);
+			seq.push_back(a1);
 
-			int tmp = (a0 << 32) | a1;
+			tmp = (a0 << 32) | a1;
 
 			if (found.count(tmp)) {
-				cout << K << " " << (j+1) << " " << (j+1-found[tmp]) << endl;
+				repeat_found = true;
 				break;
 			}
-			found.insert(tmp, j+1);
+			found[tmp] = j+1;
 		}
 
-		// print result
-		for (int i : seq) {
-			cout << " " << i;
+		if (repeat_found) {
+			int first_repeat = j+2, length = j+1-found[tmp];
+			cout << K << " " << first_repeat << " " << length << endl;
+
+			// print result
+			for (int i = first_repeat-length-1, j = 0; j < length+2; i++, j++) {
+				if (j) {
+					if (j % 20 == 0) {
+						cout << endl;
+					} else {
+						cout << " ";
+					}
+				}
+				cout << seq[i];
+			}
+			cout << endl;
+		} else {
+			cout << K << " " << n << " 0" << endl;
+			cout << a1 << endl;
+
+
 		}
-		cout << endl;
 	}
 
 	return 0;
