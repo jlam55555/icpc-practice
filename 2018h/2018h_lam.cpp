@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <unordered_set>
+#include <unordered_map>
 #include <vector>
 #include <cmath>
 
@@ -58,7 +59,7 @@ int sp(int n)
 	// otherwise return n/p
 	for (i = 0; i < primes.size(); i++) {
 		if (n % i == 0) {
-			return n;
+			return n / i;
 		}
 	}
 
@@ -67,8 +68,10 @@ int sp(int n)
 
 int main()
 {
-	int i, n, P, K, a0, a1;
-	unordered_set<pair<int,int>> found{100};
+	int i, n, P, K;
+	unsigned long a0, a1;
+	unordered_map<unsigned long, int> found{100};
+	vector<int> seq{};
 
 	// get number of datasets
 	cin >> P;
@@ -78,15 +81,31 @@ int main()
 		cin >> K >> n >> a0 >> a1;
 
 		found.clear();
-		found.insert(pair<int,int>{a0, a1});
+		found.insert((a0 << 32) | a1, 0);
 
-		for (int j = 0; j < n-2; j++) {
+		seq.clear();
+		seq.push_back(a0);
+		seq.push_back(a1);
+
+		int j;
+		for (j = 0; j < n-2; j++) {
 			a0 = a1;
 			a1 = sp(a0 + a1);
+
+			int tmp = (a0 << 32) | a1;
+
+			if (found.count(tmp)) {
+				cout << K << " " << (j+1) << " " << (j+1-found[tmp]) << endl;
+				break;
+			}
+			found.insert(tmp, j+1);
 		}
 
 		// print result
-		cout << K << " " << 42 << endl;
+		for (int i : seq) {
+			cout << " " << i;
+		}
+		cout << endl;
 	}
 
 	return 0;
