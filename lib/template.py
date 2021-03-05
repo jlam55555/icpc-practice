@@ -9,3 +9,6 @@ for i in range(P):
 
     # Print result
     print( str(i+1), end=" " )
+
+# Truncate to 3 decimals
+# print( '%.3f'%(sum) )
