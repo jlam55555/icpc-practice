@@ -69,7 +69,7 @@ int main(void)
 		double rt2 = RT*RT;
 
 		// go around the circle
-		double th, t, inc = 1e-3, dist = 0;
+		double th, t, inc = M_PI/1e4, dist = 0;
 		v3 bp, pp, first, last;
 		for (th = 0; th < 2*M_PI; th += inc) {
 			// calculate "base point" on "base circle"
