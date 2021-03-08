@@ -9,7 +9,8 @@ using namespace std;
 
 int main()
 {
-	int P, K, _round;
+	int P, _round;
+	double sum = 0, K;
 
 	// get number of datasets
 	cin >> P;
@@ -18,9 +19,13 @@ int main()
 		// get dataset number (and other necessary data)
 		cin >> K;
 
+		sum += K;
+
 		// print result
-		cout << K << " " << 42 << endl;
+		// cout << K << " " << 42 << endl;
 	}
+
+	printf("%0.3f", sum/P);
 
 	return 0;
 }

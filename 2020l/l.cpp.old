@@ -1,0 +1,34 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <vector>
+#define f(i,a,b) for(int i = a; i < b; i++)
+using namespace std;
+int dp[26]={-1};
+
+int main(){
+    int p,in1;
+    cin>>p;
+    char c;
+    int temp;
+    string line;
+    // getline(cin, line);
+    cin >> line;
+    cout<<line;
+    cout<<line.size();
+    for (int ind = 0; ind < line.size(); ind++){
+        temp=c-'a';
+        cout<<(ind-dp[temp]);
+        if(dp[temp]<0)  dp[temp]=ind;
+        else {
+            if((ind-dp[temp])%2==0)
+             dp[temp]=ind;
+            else{
+                cout<<"NO";
+                return 1;
+            }
+        }
+    }
+    cout<<"YES";
+    return 0;
+}
