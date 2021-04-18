@@ -1,3 +1,12 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+double dist(int a1, int a2, int b1, int b2) {
+        return pow(a1-b1, 2) + pow(a2-b2, 2);
+}
+
 int main()
 {
         int a1, a2, b1, b2, c1, c2;
